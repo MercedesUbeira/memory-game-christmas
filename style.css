@@ -1,0 +1,59 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    height: 100vh;
+    display: flex;
+    background-image: url('https://cdn.pixabay.com/photo/2016/12/16/15/25/christmas-1911637_1280.jpg');
+    background-size: cover; 
+}
+
+  
+  .gameContainer {
+    width: 600px;
+    height: 600px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    perspective: 1000px;
+  }
+  
+  .memoryCard {
+    width: 23%;
+    height: 23%;
+    margin: 5px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
+  
+  .memoryCard:active {
+    transform: scale(0.95);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .memoryCard.flip {
+    transform: rotateY(180deg);
+    cursor: pointer;
+  }
+  
+  .front,
+  .back {
+    background-color: #f04d4dcf;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    position: absolute;
+    backface-visibility: hidden;
+  }
+  
+  .front {
+    transform: rotateY(180deg);
+    background-color: rgba(226, 194, 194, 0.912);
+  }
+  
