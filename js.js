@@ -26,8 +26,11 @@ function check() {
 function succes() {
   firstCard.removeEventListener("click", flip);
   secondCard.removeEventListener("click", flip);
+  firstCard.classList.add("shine");
+  secondCard.classList.add("shine");
   reset();
 }
+
 
 function fail() {
   lock = true;

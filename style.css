@@ -56,4 +56,16 @@
     transform: rotateY(180deg);
     background-color: rgba(226, 194, 194, 0.912);
   }
+
+  .shine {
+    animation: shine 0.5s ease-in-out infinite;
+  }
+  
+  .shine {
+    box-shadow: 0 0 20px 5px rgb(239, 228, 163); 
+    transition: box-shadow 0.5s ease-in-out;
+    border-radius: 10px;
+    
+  }
+  
   
