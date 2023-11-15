@@ -28,18 +28,39 @@ function succes() {
   secondCard.removeEventListener("click", flip);
   firstCard.classList.add("shine");
   secondCard.classList.add("shine");
-  reset();
-}
 
+  // Play the match sound
+  document.getElementById("matchSound").play();
+
+  // Add the setTimeout to remove the shine class after 1 second
+  setTimeout(() => {
+    // Add a class to smoothly transition the shine class removal
+    firstCard.classList.add("remove-shine");
+    secondCard.classList.add("remove-shine");
+
+    // Remove the shine class after the transition ends
+    firstCard.addEventListener("transitionend", () => {
+      firstCard.classList.remove("shine", "remove-shine");
+      secondCard.classList.remove("shine", "remove-shine");
+      reset();
+    }, { once: true });
+  }, 1000);
+}
 
 function fail() {
   lock = true;
+
+  // Play the wrong sound immediately when the second card is clicked and it's not a match
+  document.getElementById("wrongSound").play();
+
+  // Remove the flip class and reset after a 1-second delay
   setTimeout(() => {
     firstCard.classList.remove("flip");
     secondCard.classList.remove("flip");
     reset();
   }, 1000);
 }
+
 
 function reset() {
   [isFlipped, lock] = [false, false];
