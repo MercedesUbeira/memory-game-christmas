@@ -1,7 +1,10 @@
+// Your JS code
 const cards = document.querySelectorAll(".memoryCard");
-var isFlipped = false;
-var firstCard, secondCard;
-var lock = false;
+let isFlipped = false;
+let firstCard, secondCard;
+let lock = false;
+let pairsMatched = 0;
+const totalPairs = cards.length / 2;
 
 cards.forEach((card) => card.addEventListener("click", flip));
 
@@ -19,41 +22,40 @@ function flip() {
 }
 
 function check() {
-  var isMatch = firstCard.dataset.image === secondCard.dataset.image;
-  isMatch ? succes() : fail();
+  const isMatch = firstCard.dataset.image === secondCard.dataset.image;
+  isMatch ? success() : fail();
 }
 
-function succes() {
+function success() {
   firstCard.removeEventListener("click", flip);
   secondCard.removeEventListener("click", flip);
   firstCard.classList.add("shine");
   secondCard.classList.add("shine");
 
-  // Play the match sound
-  document.getElementById("matchSound").play();
-
-  // Add the setTimeout to remove the shine class after 1 second
-  setTimeout(() => {
-    // Add a class to smoothly transition the shine class removal
-    firstCard.classList.add("remove-shine");
-    secondCard.classList.add("remove-shine");
-
-    // Remove the shine class after the transition ends
-    firstCard.addEventListener("transitionend", () => {
-      firstCard.classList.remove("shine", "remove-shine");
-      secondCard.classList.remove("shine", "remove-shine");
-      reset();
-    }, { once: true });
-  }, 1000);
+  pairsMatched++;
+  if (pairsMatched === totalPairs) {
+    showCongratulations();
+  } else {
+    document.getElementById("matchSound").play();
+    setTimeout(() => {
+      firstCard.classList.add("remove-shine");
+      secondCard.classList.add("remove-shine");
+      firstCard.addEventListener(
+        "transitionend",
+        () => {
+          firstCard.classList.remove("shine", "remove-shine");
+          secondCard.classList.remove("shine", "remove-shine");
+          reset();
+        },
+        { once: true }
+      );
+    }, 1000);
+  }
 }
 
 function fail() {
   lock = true;
-
-  // Play the wrong sound immediately when the second card is clicked and it's not a match
   document.getElementById("wrongSound").play();
-
-  // Remove the flip class and reset after a 1-second delay
   setTimeout(() => {
     firstCard.classList.remove("flip");
     secondCard.classList.remove("flip");
@@ -61,15 +63,35 @@ function fail() {
   }, 1000);
 }
 
-
 function reset() {
   [isFlipped, lock] = [false, false];
   [firstCard, secondCard] = [null, null];
 }
 
-(function suffle() {
+function showCongratulations() {
+  const overlay = document.getElementById("congratulationsOverlay");
+  overlay.style.display = "block";
+
+  const restartBtn = document.getElementById("restartBtn");
+  restartBtn.addEventListener("click", restartGame);
+}
+
+function restartGame() {
+  const overlay = document.getElementById("congratulationsOverlay");
+  overlay.style.display = "none";
+
+  // Add logic to reset the game state here if needed
+
+  // Shuffle the cards again
+  shuffle();
+}
+
+function shuffle() {
   cards.forEach((card) => {
-    var position = Math.floor(Math.random() * 16);
+    const position = Math.floor(Math.random() * 16);
     card.style.order = position;
   });
-})();
+}
+
+// Initial shuffle to avoid overlay at the beginning
+shuffle();
